@@ -15,7 +15,7 @@ test('Search button opens Search field', async ({ page }) => {
     await expect (homePage.searchButton, 'incorrect searchButton link').toHaveAttribute('data-href', 'https://develop.diamantllc.us/search');
 
     const NotActivatedSearchAssert = async function() {
-        expect(homePage.searchInput).toHaveCSS('display', 'none'); // no AWAIT because it calls the function
+        expect(homePage.searchInput).toHaveCSS('display', 'none'); // no AWAIT because it calls the function 
         expect(homePage.searchCloseButton).toHaveCSS('display', 'none');
     }
 
@@ -31,13 +31,13 @@ test('Search button opens Search field', async ({ page }) => {
     await NotActivatedSearchAssert();
 });
 
-test.skip('Cart link', async ({ page }) => {
+test('Cart link', async ({ page }) => {
 
     const homePage = new HomePage(page);
     await expect(homePage.cartButton, 'incorrect cartButton link').toHaveAttribute('href', `${mainUrl}/cart`);
 });
 
-test.skip('Navigation links', async ({ page }) => {
+test('Navigation links', async ({ page }) => {
 
     const homePage = new HomePage(page);
     await expect.soft(homePage.navCustomShop, 'incorrect navCustomShop link').toHaveAttribute('href', `${mainUrl}/custom-shop`);
@@ -46,7 +46,7 @@ test.skip('Navigation links', async ({ page }) => {
     await expect.soft(homePage.navContacts, 'incorrect navContacts link').toHaveAttribute('href', `${mainUrl}/contacts`);
 });
 
-test.skip('Menu links', async ({ page }) => {
+test('Menu links', async ({ page }) => {
 
     const homePage = new HomePage(page);
     await expect.soft(homePage.menuBracelets, 'incorrect menuBracelets link').toHaveAttribute('href', `${mainUrl}/jewelry/bracelets`);
