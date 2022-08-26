@@ -15,7 +15,7 @@ test('Search button opens Search field', async ({ page }) => {
     await expect (homePage.searchButton, 'incorrect searchButton link').toHaveAttribute('data-href', 'https://develop.diamantllc.us/search');
 
     const NotActivatedSearchAssert = async function() {
-        expect(homePage.searchInput).toHaveCSS('display', 'none'); // no AWAIT because it calls the function 
+        expect(homePage.searchInput).toHaveCSS('display', 'none'); // no AWAIT because it calls the function
         expect(homePage.searchCloseButton).toHaveCSS('display', 'none');
     }
 
