@@ -1,10 +1,8 @@
 import { test, expect, Page } from '@playwright/test';
 import { HomePage } from '../../pages/homePage';
 
-const mainUrl: String = 'http://develop.diamantllc.us';
-
 test.beforeEach(async ({ page }) => {
-    await page.goto(`${mainUrl}`);
+    await page.goto('/');
     retries: 3;
 });
 
@@ -12,45 +10,48 @@ test('Search button opens Search field', async ({ page }) => {
 
     const homePage = new HomePage(page);
 
-    await expect (homePage.searchButton, 'incorrect searchButton link').toHaveAttribute('data-href', 'https://develop.diamantllc.us/search');
+    await expect (homePage.searchButton, 'incorrect searchButton link').toHaveAttribute('data-href', /.*search/);
 
-    const NotActivatedSearchAssert = async function() {
-        expect(homePage.searchInput).toHaveCSS('display', 'none'); // no AWAIT because it calls the function
-        expect(homePage.searchCloseButton).toHaveCSS('display', 'none');
-    }
+    // Verify not activated Search
+    await expect(homePage.searchInput).toHaveCSS('display', 'none');
+    await expect(homePage.searchCloseButton).toHaveCSS('display', 'none');
+    
+    // Activate search
+    await homePage.searchButton.click(); 
 
-    const ActivatedSearchAssert = async function() {
-        expect(homePage.searchInput).not.toHaveCSS('display', 'none');
-        expect(homePage.searchCloseButton).not.toHaveCSS('display', 'none'); 
-    } 
+    // Verify activated Search
+    await expect(homePage.searchInput).toHaveCSS('display', 'block');
+    await expect(homePage.searchCloseButton).toHaveCSS('display', 'block'); 
 
-    await NotActivatedSearchAssert();
-    await homePage.searchButton.click(); // activate search
-    await ActivatedSearchAssert();
-    await homePage.searchCloseButton.click(); // deactivate search
-    await NotActivatedSearchAssert();
+    // Deactivate search
+    await homePage.searchCloseButton.click();
+
+    // Verify not activated Search
+    await expect(homePage.searchInput).toHaveCSS('display', 'none');
+    await expect(homePage.searchCloseButton).toHaveCSS('display', 'none');    
+
 });
 
 test('Cart link', async ({ page }) => {
 
     const homePage = new HomePage(page);
-    await expect(homePage.cartButton, 'incorrect cartButton link').toHaveAttribute('href', `${mainUrl}/cart`);
+    await expect(homePage.cartButton, 'incorrect cartButton link').toHaveAttribute('href', /.*cart/);
 });
 
 test('Navigation links', async ({ page }) => {
 
     const homePage = new HomePage(page);
-    await expect.soft(homePage.navCustomShop, 'incorrect navCustomShop link').toHaveAttribute('href', `${mainUrl}/custom-shop`);
-    await expect.soft(homePage.navBlog, 'incorrect navBlog link').toHaveAttribute('href', `${mainUrl}/blog`);
-    await expect.soft(homePage.navAboutUs, 'incorrect navAboutUs link').toHaveAttribute('href', `${mainUrl}/about-us`);
-    await expect.soft(homePage.navContacts, 'incorrect navContacts link').toHaveAttribute('href', `${mainUrl}/contacts`);
+    await expect.soft(homePage.navCustomShop, 'incorrect navCustomShop link').toHaveAttribute('href', /.*custom-shop/);
+    await expect.soft(homePage.navBlog, 'incorrect navBlog link').toHaveAttribute('href', /.*blog/);
+    await expect.soft(homePage.navAboutUs, 'incorrect navAboutUs link').toHaveAttribute('href', /.*about-us/);
+    await expect.soft(homePage.navContacts, 'incorrect navContacts link').toHaveAttribute('href', /.*contacts/);
 });
 
 test('Menu links', async ({ page }) => {
 
     const homePage = new HomePage(page);
-    await expect.soft(homePage.menuBracelets, 'incorrect menuBracelets link').toHaveAttribute('href', `${mainUrl}/jewelry/bracelets`);
-    await expect.soft(homePage.menuEarrings, 'incorrect menuEarrings link').toHaveAttribute('href', `${mainUrl}/jewelry/earrings`);
-    await expect.soft(homePage.menuNecklaces, 'incorrect menuNecklaces link').toHaveAttribute('href', `${mainUrl}/jewelry/necklaces-pendants`);
-    await expect.soft(homePage.menuRings, 'incorrect menuRings link').toHaveAttribute('href', `${mainUrl}/jewelry/rings`);
+    await expect.soft(homePage.menuBracelets, 'incorrect menuBracelets link').toHaveAttribute('href', /.*jewelry\/bracelets/);
+    await expect.soft(homePage.menuEarrings, 'incorrect menuEarrings link').toHaveAttribute('href', /.*jewelry\/earrings/);
+    await expect.soft(homePage.menuNecklaces, 'incorrect menuNecklaces link').toHaveAttribute('href', /.*jewelry\/necklaces-pendants/);
+    await expect.soft(homePage.menuRings, 'incorrect menuRings link').toHaveAttribute('href', /.*jewelry\/rings/);
 });

@@ -1,4 +1,5 @@
 import { Locator, Page } from '@playwright/test';
+import { faker } from '@faker-js/faker';
 
 export class Checkout {
     readonly page: Page;
@@ -46,6 +47,7 @@ export class Checkout {
         this.cardExpireDate = page.locator('#card-form__expire-date');
         this.cardCsc = page.locator('#card-form__csc');
 
+        // Billing address
         this.shipToBillingAddressCheckbox = page.locator('#shipping-question__checkbox');
         this.shippingAddressTitle = page.locator('.shipping-form__title');
         this.shippingFirstName = page.locator('[name="shipping_address[firstname]"]');
@@ -59,7 +61,30 @@ export class Checkout {
 
         this.summaryToggleButton = page.locator('#shopping-cart__toggle-button');
 
+    }
 
+    async fillAllFields() {
+        await this.firstName.type(faker.name.firstName());
+        await this.lastName.fill(faker.name.lastName());
+        await this.telephone.type(faker.phone.number('##########'))    
+        await this.email.fill(faker.internet.email());
+        await this.address.fill(faker.address.street());
+        await this.city.fill(faker.address.city());
+        await this.state.selectOption( { value: '3626'});
+        await this.zipCode.fill(faker.address.zipCode());
+        await this.cardNumber.type(faker.finance.creditCardNumber());
+
+        let monthRandom: any = Math.floor(Math.random() * 12) + 1;
+        if ( monthRandom < 10 ) {
+            monthRandom = '0' + monthRandom; 
+        }
+
+        let yearRandom: any = Math.floor(Math.random() * 50) + 24;
+
+        let expireDate = `${monthRandom} + ${yearRandom}` 
+        
+        await this.cardExpireDate.fill(expireDate);
+        await this.cardCsc.type(faker.finance.creditCardCVV());
     }
 
 }
