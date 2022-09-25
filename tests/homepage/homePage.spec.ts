@@ -3,7 +3,6 @@ import { HomePage } from '../../pages/homePage';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
-    retries: 3;
 });
 
 test('Search button opens Search field', async ({ page }) => {

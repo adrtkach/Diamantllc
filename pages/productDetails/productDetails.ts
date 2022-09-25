@@ -1,16 +1,15 @@
 import { Locator, Page } from '@playwright/test';
-import { CartPopup } from './cart/cartPopup';
+import { CartPopup } from './components/cartPopup';
 
 
-export class ProductDetails {
+export class ProductDetails extends CartPopup{
     readonly page: Page;
     readonly addToCartButton: Locator;
     readonly cartPopup: Locator;
 
     constructor (page: Page) {
+        super(page);
         this.addToCartButton = page.locator('#product-page__cart-button');
-        const cartPopup = new CartPopup(page);
-
     }
 
     async pressAddToCartButton() {
@@ -18,8 +17,8 @@ export class ProductDetails {
     }
 
     async addProductToCart() {
-        await this.pressAddToCartButton();
-        await this.page.locator('.cart-popup__cart-link').click();
+        await this.addToCartButton.click();
+        await super.pressGoToCartButton();
     }
 
     

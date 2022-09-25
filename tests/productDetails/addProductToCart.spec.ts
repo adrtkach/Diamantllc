@@ -1,6 +1,6 @@
 import { test, expect, Page } from '@playwright/test';
-import { ProductDetails } from '../../pages/productDetails';
-import { CartPopup } from '../../pages/cart/cartPopup'
+import { ProductDetails } from '../../pages/productDetails/productDetails';
+import { CartPopup } from '../../pages/productDetails/components/cartPopup'
 
 let productId = 144;
 
@@ -8,7 +8,6 @@ test.beforeEach(async ({ page }) => {
     
      // Go to Product details page
     await page.goto(`/index.php?route=product/product&product_id=${productId}`);
-    retries: 3;
 });
 
 test('Added to Cart popup appears', async ({ page }) => {
@@ -38,8 +37,7 @@ test('Added to Cart popup - Go to Cart', async ({ page }) => {
     const productDetails = new ProductDetails(page);
     const cartPopup = new CartPopup(page);
 
-    await productDetails.addProductToCart();
-    await cartPopup.pressGoToCartButton();
-    await expect(page).toHaveURL(`/cart`);
+    await productDetails.pressAddToCartButton();
+    await expect(cartPopup.goToCartButton, 'incorrect cart link').toHaveAttribute('href', /.*cart/);
 
 })
